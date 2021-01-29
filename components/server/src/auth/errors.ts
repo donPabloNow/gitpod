@@ -53,3 +53,32 @@ export namespace UnconfirmedUserException {
         return AuthException.is(error) && error.authException === type;
     }
 }
+
+export interface TwinUserException extends AuthException {
+    payload: TwinUserException.Payload;
+}
+export namespace TwinUserException {
+    const type = "TwinUserException";
+    export function create(message: string, payload: TwinUserException.Payload) {
+        return AuthException.create(type, message, payload);
+    }
+    export function is(error: any): error is TwinUserException {
+        return AuthException.is(error) && error.authException === type;
+    }
+    export interface Payload {
+        currentUser: {
+            name: string;
+            avatarUrl: string;
+            authHost: string;
+            authName: string;
+            authProviderType: string;
+        };
+        otherUser: {
+            name: string;
+            avatarUrl: string;
+            authHost: string;
+            authName: string;
+            authProviderType: string;
+        };
+    }
+}
